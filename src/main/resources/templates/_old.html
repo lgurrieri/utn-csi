@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headTag :: headTag ('roles')">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body class="adminbody">
+<div id="main">
+    <div class="headerbar" th:replace="fragments/header :: headerbar">
+    </div>
+    <div class="left main-sidebar" th:replace="fragments/sidebar :: sidebar">
+    </div>
+    <div class="content-page">
+
+        <!-- Start content -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left" th:text="#{view.evidence}"></h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item" th:text="#{view.evidence}"></li>
+                                <li class="breadcrumb-item active" th:text="#{view.administration}"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+
+
+                <div class="row">
+                    <div class="col-xl-12">
+
+                        <div class="card">
+                            <div class="card-header"><h3 class="text-info m-b-10 m-l-5"
+                                                         th:text="#{view.evidence}"></h3>
+                                <div class="table-responsive">
+                                    <div class="input-group space">
+                                        <form name="searchUser" action="/users" class="input-group col-6">
+                                            <input th:value="*{search}" type="text" class="form-control col-6 space"
+                                                   name="search">
+                                            <button type="submit" class="btn btn-default" th:text="#{view.search}"><i
+                                                    class="ti-search space"></i>Buscar
+                                            </button>
+                                        </form>
+                                        <div class="col-6">
+                                            <form name="addCustomer" action="/adduser">
+                                                <button type="submit" class="btn badge-info pull-right btnAdd"
+                                                        th:text="${#messages.msg('view.create', #messages.msg('view.users'))}">
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <table class="table table-hover table-info-sale"
+                                           cellspacing="0" width="100%" role="grid" aria-describedby="example23_info"
+                                           style="width: 100%;">
+                                        <thead>
+                                        <tr>
+                                            <th th:text="#{view.users.list.username}"></th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="role: ${data.content}">
+                                            <td th:text="${role.role}"></td>
+                                            <td>
+                                                <a th:href="'/editrole/'+${role.id}"
+                                                   class="btn badge badge-success spaceBtn fa fa-edit"
+                                                   data-toggle="tooltip" th:title="#{view.edit}">
+                                                </a>
+                                                <form th:id="'form_'+${role.id}" action="#" class="pull-right"
+                                                      method="post"
+                                                      th:action="'/roles/delete/'+${role.id}">
+                                                    <button data-toggle="tooltip" th:title="#{view}"
+                                                            class="btn badge badge-danger delete-rol fa fa-times"
+                                                            th:id=${role.id}
+                                                            data-th-attr="data-title=#{user.view.msg.confirm-disable-title},data-error-msg=#{user.view.msg.error-msg},
+                                                         data-error-title=#{user.view.msg.error-title}, data-msg=#{user.view.msg.confirm-disable(${role.role})}">
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <hr/>
+                                    <div th:if="${data.totalPages > 0}">
+                                        <ul class="nav nav-pills center">
+                                            <span class="labelPaginate" th:text="#{view.page}"></span>
+                                            <li class="nav-item"
+                                                th:each="i: ${#numbers.sequence(0, data.totalPages-1)}">
+                                                <a th:text="${i}" class="nav-link"
+                                                   th:href="@{roles/(search=${search},page=${i})}"
+                                                   th:classappend="${currentPage}==${i} ? 'active' : ''"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div th:if="${data.totalPages < 1}">
+                                        <ul class="nav nav-pills center">
+                                        <span class="text-warning italic"
+                                              th:text="#{view.no-results}"></span>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- END container-fluid -->
+
+        </div>
+        <!-- END content -->
+
+    </div>
+    <!-- END content-page -->
+
+    <footer th:replace="fragments/footer::footer">
+    </footer>
+</div>
+<th:block th:replace="fragments/scripts :: scripts">
+</th:block>
+</body>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/headTag :: headTag ('roles')">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body class="adminbody">
+<div id="main">
+    <div class="headerbar" th:replace="fragments/header :: headerbar">
+    </div>
+    <div class="left main-sidebar" th:replace="fragments/sidebar :: sidebar">
+    </div>
+    <div class="content-page">
+
+        <!-- Start content -->
+        <div class="content">
+
+            <div class="container-fluid">
+
+
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="breadcrumb-holder">
+                            <h1 class="main-title float-left" th:text="#{view.evidence}"></h1>
+                            <ol class="breadcrumb float-right">
+                                <li class="breadcrumb-item" th:text="#{view.evidence}"></li>
+                                <li class="breadcrumb-item active" th:text="#{view.evidence}"></li>
+                            </ol>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+
+
+                <div class="row">
+                    <div class="col-xl-12">
+
+                        <div class="card">
+                            <div class="card-header"><h3 class="text-info m-b-10 m-l-5"
+                                                         th:text="#{view.evidence}"></h3></div>
+                                <div class="table-responsive">
+                                    <div class="input-group space">
+                                        <form name="searchUser" action="/users" class="input-group col-6">
+                                            <input th:value="*{search}" type="text" class="form-control col-6 space"
+                                                   name="search">
+                                            <button type="submit" class="btn btn-default" th:text="#{view.evidence}"><i
+                                                    class="ti-search space"></i>Buscar
+                                            </button>
+                                        </form>
+                                        <div class="col-6">
+                                            <form name="addCustomer" action="/adduser">
+                                                <button type="submit" class="btn badge-info pull-right btnAdd"
+                                                        th:text="${#messages.msg('view.create', #messages.msg('view.users'))}">
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <table class="table table-hover table-info-sale"
+                                           cellspacing="0" width="100%" role="grid" aria-describedby="example23_info"
+                                           style="width: 100%;">
+                                        <thead>
+                                        <tr>
+                                            <th th:text="#{view.evidence}"></th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="evidencia: ${evidences}">
+                                            <td th:text="${evidencia.getDescription()}"></td>
+                                            <td>
+                                                <a th:href="'/editrole/'+${evidencia.getDescription()}"
+                                                   class="btn badge badge-success spaceBtn fa fa-edit"
+                                                   data-toggle="tooltip" th:title="#{view.evidence}">
+                                                </a>
+                                                <form th:id="'form_'+${evidencia.getDescription()}" action="#" class="pull-right"
+                                                      method="post"
+                                                      th:action="'/roles/delete/'+${evidencia.getDescription()}">
+                                                    <button data-toggle="tooltip" th:title="#{view.evidence}"
+                                                            class="btn badge badge-danger delete-rol fa fa-times"
+                                                            th:id=${evidencia.getDescription()}
+                                                            >
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <hr/>
+                                </div>
+                            <!--</div>-->
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="card mb-12">
+                        <div class="card-header">
+                            <h3><i class="fa fa-table"></i> Striped rows table</h3>
+                            Use <i>.table-striped</i> to add zebra-striping to any table row within the 'tbody'. (<a target="_blank" href="https://getbootstrap.com/docs/4.0/content/tables/#striped-rows">more info</a>)
+                        </div>
+
+                        <div class="card-body">
+
+                            <table class="table table-responsive-xl table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Username</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>Larry</td>
+                                    <td>the Bird</td>
+                                    <td>@twitter</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div><!-- end card-->
+                </div>
+
+
+
+            </div>
+            <!-- END container-fluid -->
+
+        </div>
+        <!-- END content -->
+
+    </div>
+    <!-- END content-page -->
+
+    <footer th:replace="fragments/footer::footer">
+    </footer>
+</div>
+<th:block th:replace="fragments/scripts :: scripts">
+</th:block>
+</body>
