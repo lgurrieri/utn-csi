@@ -10,4 +10,5 @@ public class UtnSpringCsiApplication {
         SpringApplication.run(UtnSpringCsiApplication.class, args);
     }
 
+
 }
