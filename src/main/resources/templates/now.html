@@ -38,7 +38,7 @@
                         Content here!
                         Content here!
                         Content here!
-                        <p th:text="${#temporals.formatISO(now)}"></p>
+                        <p th:text="${#dates.format(now, 'dd-MM-yyyy HH:mm')}"></p>
                     </div>
                 </div>
 
