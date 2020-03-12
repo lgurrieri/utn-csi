@@ -1,5 +1,6 @@
 package edu.utn.frsr.csi.services;
 
+import edu.utn.frsr.csi.dao.EvidenceRepository;
 import edu.utn.frsr.csi.model.Evidence;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.stereotype.Service;
@@ -12,32 +13,27 @@ import java.util.Optional;
 @Service
 public class ServiceEvidence {
 
-    private ArrayList<Evidence> evidences = new ArrayList<>();
+    EvidenceRepository evidenceRepository;
 
-    public ServiceEvidence(){
-        Evidence evidence = new Evidence();
-        evidence.setId(1L);
-        evidence.setCreateDate(LocalDate.now());
-        evidence.setDescription("Evidencia Nº 1");
-        evidences.add(evidence);
+    public ServiceEvidence(EvidenceRepository evidenceRepository){
+        this.evidenceRepository = evidenceRepository;
     }
 
     public List<Evidence> getAllEvidences(){
-
-        return evidences;
+        return evidenceRepository.findAll();
     }
 
-    public void addEvidence(Evidence evidence) {
-        evidence.setId(evidences.size()+1L);
-        evidence.setCreateDate(LocalDate.now());
-        this.evidences.add(evidence);
+    public Evidence create(Evidence evidence){
+        return evidenceRepository.save(evidence);
     }
 
-    public Evidence getEvidence(Long id){
-        return evidences.stream().filter(evidence -> evidence.getId().equals(id)).findAny().orElse(null);
+
+    public void update(Evidence evidence){
+        evidenceRepository.save(evidence);
     }
 
-    public void replaceEvidence(Evidence evidence) {
-
+    public Optional<Evidence> findById(Long id){
+        return evidenceRepository.findById(id);
     }
+
 }

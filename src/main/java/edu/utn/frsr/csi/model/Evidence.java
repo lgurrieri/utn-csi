@@ -1,11 +1,20 @@
 package edu.utn.frsr.csi.model;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Entity
+@Table(name = "evidencias")
 public class Evidence {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name", nullable = false)
     private String description;
+
+    @Column(name = "create_date", nullable = false)
     private LocalDate createDate;
 
     public Long getId() {
@@ -45,5 +54,10 @@ public class Evidence {
     @Override
     public int hashCode() {
         return Objects.hash(id, description, createDate);
+    }
+
+    @PrePersist
+    public void updateCreateDate(){
+        createDate = LocalDate.now();
     }
 }

@@ -3,6 +3,7 @@ package edu.utn.frsr.csi.web;
 import edu.utn.frsr.csi.model.Evidence;
 import edu.utn.frsr.csi.services.ServiceEvidence;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.sql.Date;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class EvidenceController {
@@ -44,6 +46,7 @@ public class EvidenceController {
 
         Evidence evidence = new Evidence();
         modelAndView.addObject("action", "/add_evidence");
+        modelAndView.addObject("buttonLabel", "Crear");
         modelAndView.addObject("method", "post");
         modelAndView.addObject("evidence", evidence);
         return modelAndView;
@@ -51,24 +54,27 @@ public class EvidenceController {
 
     @RequestMapping(value = "/add_evidence", method = RequestMethod.POST)
     public String createEvidence(@ModelAttribute("evidence") Evidence evidence){
-        serviceEvidence.addEvidence(evidence);
+        serviceEvidence.create(evidence);
         return "redirect:/evidencias";
     }
 
     @RequestMapping(value = "/edit_evidence/{id}", method = RequestMethod.GET)
-    public ModelAndView editEvidence(@PathVariable("id") Long id){
+    public String editEvidence(@PathVariable("id") Long id, ModelMap modelMap){
         ModelAndView modelAndView = new ModelAndView("form_evidence");
 
-        Evidence evidence = serviceEvidence.getEvidence(id);
-        modelAndView.addObject("action", "/edit_evidence");
-        modelAndView.addObject("method", "post");
-        modelAndView.addObject("evidence", evidence);
-        return modelAndView;
+        if(!modelMap.containsAttribute("evidence")){
+            Evidence evidence = serviceEvidence.findById(id).get();
+            modelMap.addAttribute("evidence", evidence);
+        }
+        modelMap.addAttribute("action", "/edit_evidence");
+        modelMap.addAttribute("buttonLabel", "Editar");
+        modelMap.addAttribute("method", "PUT");
+        return "form_evidence";
     }
 
     @RequestMapping(value = "/edit_evidence", method = RequestMethod.POST)
     public String saveEvidence(@ModelAttribute("evidence") Evidence evidence){
-        serviceEvidence.replaceEvidence(evidence);
+        serviceEvidence.update(evidence);
         return "redirect:/evidencias";
     }
 }
